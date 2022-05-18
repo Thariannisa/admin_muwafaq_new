@@ -1,0 +1,62 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Star Admin2 </title>
+</head>
+<body>
+    {% block content %}
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Tambah Modul MFQ</h4>
+                                    <form class="forms-sample" action="daftarmodul" method="POST"
+                                        enctype="multipart/form-data">
+                                        <div class="form-group">
+                                             {{ form.judul.label(class='form-control-label') }}
+                                             {% if form.judul.errors %}
+                                             {{form.judul(class="form-control")}}
+                                             <div class="invalid-feedback">
+                                                 {% for error in form.judul.errors %}
+                                                 <span> {{ error }} </span>
+                                                 {% endfor %}
+                                             </div>
+                                             {% else %}
+                                             {{ form.judul(class="form-control") }}
+                                             {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                                {{ form.PDF.label(class='form-control-label') }}
+                                                {% if form.PDF.errors %}
+                                                {{form.PDF(class="form-control file-upload-info")}}
+                                                <span class="input-group-append">
+                                                    <div class="invalid-feedback">
+                                                        {% for error in form.PDF.errors %}
+                                                        <span> {{ error }} </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                    {% else %}
+                                                    {{ form.PDF(class="form-control file-upload-info", accept="application/pdf") }}
+                                                    {% endif %}
+                                            
+                                        </div>
+
+                                        <div class="field-group">
+                                            {{form.submit(class='btn btn-utama me-2')}}
+                                        </div>
+                                        
+                           
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    {% endblock content %}          
+</body>
+</html>

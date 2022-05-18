@@ -1,0 +1,47 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Tambah Tema </title>
+</head>
+
+<body>
+    {% block content %}
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Tema tajwid</h4>
+                        <form class="forms-sample" action="daftartema" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleInputName1">Tema</label>
+                                <input type="text" class="form-control" id="exampleInputName1"
+                                    placeholder="Masukkan tema" name="tema">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName1" class="form-label">Jenis Konten<span
+                                        class="text-danger"></span></label>
+                                <select class="form-control" id="exampleInputName1" name="konten">
+                                    <option hidden value="">Pilih jenis konten</option>
+                                    <option value="tulisan">tulisan</option>
+                                    <option value="video">video</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-utama me-2" type="submit">Submit</button>
+                            <!-- <a href="{{ url_for('tilawah.maintilawah') }}" class="btn btn-primary me-2">Submit</a> -->
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+</body>
+
+</html>

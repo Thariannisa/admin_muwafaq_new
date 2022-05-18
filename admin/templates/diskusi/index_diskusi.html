@@ -1,0 +1,159 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Star Admin2 </title>
+</head>
+
+<body>
+  {% block content %}
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="home-tab">
+          <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+          </div>
+          <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+              <div class="row">
+                <div class="row flex-grow">
+                  <div class="col-12 grid-margin stretch-card">
+                    <div class="card card-rounded">
+                      <div class="card-body">
+                        <div class="d-sm-flex justify-content-between align-items-start">
+                          <div>
+                            <h4 class="card-title card-title-dash">Diskusi</h4>
+                          </div>
+                          <div>
+                            <a class="nav-link" href="{{ url_for('diskusi.addPlatform') }}">
+                              <button class="btn btn-utama btn-lg text-white mb-0 me-0" type="button">
+                                <i class="mdi mdi-account-plus"></i>
+                                Tambah Platform
+                              </button>
+                            </a>
+                          </div>
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr style="text-align:center">
+                                <th class="col-lg-1">No</th>
+                                <th class="col-lg-2">Platform</th>
+                                <th class="col-lg-3">Link</th>
+                                <th class="col-lg-3">Keterangan</th>
+                                <th class="col-lg-3">aksi</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for  x in data %}
+                              <tr >
+                                <td>
+                                  {{loop.index}}
+                                </td>
+                                <td>
+                                  {{x['platform']}}
+                                </td>
+                                <td>
+                                  <a href="{{x['link']}}">{{x['link']}}</a>
+                                  
+                                </td>
+                                <td>
+                                  <a style="display:inline-block; white-space:
+                                                                        nowrap; overflow: hidden; text-overflow:
+                                                                        ellipsis; max-width:
+                                                                        50ch;">{{x['keterangan']}}
+                                  </a>
+                                  
+                                </td>
+                                <td style="text-align:center">
+                                  <a href="{{url_for('diskusi.delete', id=x.idPlatform )}}"
+                                    class="btn btn-inverse-success btn-fw">Edit</a>
+                                  <button type="button" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal{{x.idPlatform}}">
+                                    Hapus
+                                  </button>
+                                </td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row flex-grow">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% for  x in data %}
+    <div class="modal fade" id="exampleModal{{x.idPlatform}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Apakah anda ingin menghapusnya? data akan terhapus secara permanen
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <form action="{{url_for('diskusi.delete', id=x.idPlatform )}}" method="POST">
+              <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+  {% endblock content %}
+  <script>
+    $('#sample_data').DataTable({
+      "scrollX": true,
+      "bAutoWidth": false,
+      // "sScrollY": "200px",
+      "bScrollCollapse": true,
+      "lengthChange": false,
+      "bInfo": false,
+      // dom: 'Bfrtip',
+      // buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+      // dom: 'Bfrtip',
+      // "<'row'<'col-md-3'l><'col-md-5'B><'col-md-4'f>>" +
+      // "<'row'<'col-md-12'tr>>" +
+      // "<'row'<'col-md-5'i><'col-md-7'p>>",
+      // lengthMenu: [
+      //   [10, 25, 50, 100, -1],
+      //   [10, 25, 50, 100, "All"]
+      // ],
+
+      "bPaginate": false,
+      "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+        $('td:eq(0)', nRow).html(iDisplayIndexFull + 1);
+      }
+
+      //   "bJQueryUI": true,
+      //   "aoColumnDefs": [
+      //       { "sWidth": "10%", "aTargets": [ -1 ] }
+      //   ]
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+  </script>
+</body>
+
+</html>

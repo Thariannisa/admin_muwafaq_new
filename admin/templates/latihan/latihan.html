@@ -1,0 +1,124 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+  <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+  <title> Latihan </title>
+
+</head>
+
+<body>
+  {% block content %}
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-sm-flex align-items-center mb-4">
+                    <div class="col-sm-4">
+                      <button type="button" class="btn btn-info add-new"
+                        onclick="window.location.href='/alternatif/add'"><i class="fa fa-plus"></i> Tambah </button>
+                    </div>
+                  </div>
+                  <table id="sample_data" class="table table-bordered table-striped" style="text-align:center">
+                    <thead>
+                      <tr>
+                        <th class="col-lg-1">No</th>
+                        <th class="col-lg-2">Pertanyaan</th>
+                        <th class="col-lg-3">Pilihan 1</th>
+                        <th class="col-lg-3">Pilihan 2</th>
+                        <th class="col-lg-3">Pilihan 3</th>
+                        <th class="col-lg-3">Pilihan 4</th>
+                        <th class="col-lg-3">Jawaban</th>
+                        <th class="col-lg-3">aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+{% for  x in data %}
+<tr>
+  <td>
+    {{loop.index}}
+  </td>
+  <td>
+    <div style="width: 100px;">
+      <div style="word-break:break-all"> {{x['pertanyaan']}} </div>
+    </div>
+    <!-- {{x['pertanyaan']}} -->
+  </td>
+  <td>
+    {{x['pilihan1']}}
+  </td>
+  <td>
+    {{x['pilihan2']}}
+  </td>
+  <td>
+    {{x['pilihan3']}}
+  </td>
+  <td>
+    {{x['pilihan4']}}
+  </td>
+  <td>
+    {{x['jawaban']}}
+  </td>
+  <td>
+    <a href="{{url_for('latihan.deleteLatihan', id=x.id )}}" class="btn btn-inverse-success btn-fw">Edit</a>
+    <button type="button" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal"
+      data-bs-target="#exampleModal{{x.id}}">
+      Hapus
+    </button>
+  </td>
+</tr>
+{% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% for  x in data %}
+    <div class="modal fade" id="exampleModal{{x.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Apakah anda ingin menghapusnya? data akan terhapus secara permanen
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <form action="{{url_for('latihan.deleteLatihan', id=x.id )}}" method="POST">
+              <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock content %}
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src=https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js> </script> $(document).ready(function()
+    { $('#sample_data').DataTable(); } );
+</body>
+
+</html>

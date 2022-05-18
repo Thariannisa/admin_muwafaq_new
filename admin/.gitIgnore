@@ -1,0 +1,7 @@
+# virtual env
+env/
+# db
+root/site.db
+# local env
+.env
+*/__pycache__/

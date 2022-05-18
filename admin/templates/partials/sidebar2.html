@@ -1,0 +1,57 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}">
+                <i class="mdi mdi-grid-large menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('modul.mainModul') }}">
+                <i class="menu-icon mdi mdi-file-document"></i>
+                <span class="menu-title">Modul MFQ</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+                <i class="menu-icon mdi mdi-chart-line"></i>
+                <span class="menu-title">Materi</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="charts">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('tilawah.maintilawah') }}">Tilawah</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse" id="charts">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('mawaris.mainmawaris') }}">Mawaris</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse" id="charts">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('fiqh.mainfiqh') }}">Fiqh</a></li>
+                </ul>
+            </div>
+            <div class="collapse" id="charts">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ url_for('tajwid.maintajwid') }}">Tajwid</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('latihan.mainlatihan') }}">
+                <i class="menu-icon mdi mdi-file-document"></i>
+                <span class="menu-title">Latihan</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('diskusi.maindiskusi') }}">
+                <i class="menu-icon mdi mdi-file-document"></i>
+                <span class="menu-title">Diskusi</span>
+            </a>
+        </li>
+    </ul>
+</nav>

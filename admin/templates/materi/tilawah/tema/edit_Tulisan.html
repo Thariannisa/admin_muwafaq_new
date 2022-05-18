@@ -1,0 +1,80 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Star Admin2 </title>
+</head>
+
+<body>
+    {% block content %}
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- <h4 class="card-title">Edit Materi</h4> -->
+                        
+                        <h4 class="card-title">{{data["tema"]}}</h4>
+                        <h4 class="card-title">{{data["judul"]}}</h4>
+                        <h4 class="card-title">{{data["tulisan"]}}</h4>
+
+                        
+                        
+                        
+                        <form class="forms-sample" action="" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleInputName1" class="form-label">Tema<span
+                                        class="text-danger"></span></label>
+                                <select class="form-control" name="idTema">
+                                    {{data["tema"]}}
+                                    <!-- {% for x in data %}
+                                    <option value="{{x['tema']}}">{{x['tema']}}</option>     
+                                    {% endfor %} -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                {{ form.judul.label(class='form-control-label') }}
+                                {% if form.judul.errors %}
+                                {{form.judul(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.judul.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.judul.data(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.tulisan.label(class='form-control-label') }}
+                                <div class="form-floating">
+                                    {% if form.tulisan.errors %}
+                                    {{form.tulisan(class="form-control", style="height: 200px")}}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.tulisan.errors %}
+                                        <span> {{ error }} </span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.tulisan(class="form-control") }}
+                                    {% endif %}
+                                </div>                            
+                            </div>
+                            <button class="btn btn-utama me-2" type="submit">Submit</button>
+                        
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+<script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
+
+</body>
+
+</html>

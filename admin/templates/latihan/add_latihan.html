@@ -1,0 +1,110 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Star Admin2 </title>
+</head>
+
+<body>
+    {% block content %}
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Latihan</h4>
+                        <form class="forms-sample" action="daftarlatihan" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                {{ form.pilihan1.label(class='form-control-label') }}
+                                {% if form.pertanyaan.errors %}
+                                {{form.pertanyaan(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pertanyaan.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pertanyaan(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.pilihan1.label(class='form-control-label') }}
+                                {% if form.pilihan1.errors %}
+                                {{form.pilihan1(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan1.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan1(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.pilihan2.label(class='form-control-label') }}
+                                {% if form.pilihan2.errors %}
+                                {{form.pilihan2(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan2.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan2(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.pilihan3.label(class='form-control-label') }}
+                                {% if form.pilihan3.errors %}
+                                {{form.pilihan3(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan3.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan3(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.pilihan4.label(class='form-control-label') }}
+                                {% if form.pilihan4.errors %}
+                                {{form.pilihan4(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan4.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan4(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName1" class="form-label">Jawaban<span
+                                        class="text-danger"></span></label>
+                                <select class="form-control" name="jawaban">
+                                    <option hidden value="">Pilih jawaban benar</option>
+                                    <option value="pilihan1">Pilihan1</option>
+                                    <option value="pilihan2">Pilihan2</option>
+                                    <option value="pilihan3">Pilihan3</option>
+                                    <option value="pilihan4">Pilihan4</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                {{form.submit(class='btn btn-utama me-2')}}
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+</body>
+</html>
