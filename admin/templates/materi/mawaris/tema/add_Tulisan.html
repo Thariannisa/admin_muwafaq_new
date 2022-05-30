@@ -42,16 +42,18 @@
                             </div>
                             <div class="form-group">
                                 {{ form.tulisan.label(class='form-control-label') }}
-                                {% if form.tulisan.errors %}
-                                {{form.tulisan(class="form-control")}}
-                                <div class="invalid-feedback">
-                                    {% for error in form.tulisan.errors %}
-                                    <span> {{ error }} </span>
-                                    {% endfor %}
+                                <div class="form-floating">
+                                    {% if form.tulisan.errors %}
+                                    {{form.tulisan(class="form-control form-control-sm-12", style="height: 100%;")}}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.tulisan.errors %}
+                                        <span> {{ error }} </span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.tulisan(class="form-control form-control-sm-12") }}
+                                    {% endif %}
                                 </div>
-                                {% else %}
-                                {{ form.tulisan(class="form-control") }}
-                                {% endif %}
                             </div>
                             <button class="btn btn-utama me-2" type="submit">Submit</button>
                         </form>

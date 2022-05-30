@@ -48,6 +48,7 @@ app.register_blueprint(users2)
 # app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///site.db"
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba288'
 app.config['WTF_CSRF_SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba288'
+user = {"username": "bismillahtes", "password": "muwafaqtes"}
 # set db
 # db = SQLAlchemy(app)
 # migrate = Migrate(app, db)

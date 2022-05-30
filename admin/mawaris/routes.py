@@ -2,6 +2,9 @@ import datetime
 import os
 from xml.etree.ElementTree import dump
 from flask import flash, jsonify, render_template, request, redirect
+from api import model
+from api.model.mawaris.atur import ubah, update
+from api.model.mawaris.model import MateriMawaris, materiMawaris_KIND
 from . import mawaris
 from form.forms import (
     KontenTulisanForm,
@@ -291,3 +294,81 @@ def deleteTema(id):
             return redirect('/mawaris')
     else:
         return "gagal"
+
+
+@mawaris.route('/edit_tulisan/<int:id>/<int:idTema>',  methods=["GET", "POST"])
+def edit_tulisan(id, idTema):
+    form = KontenTulisanForm()
+    # Lakukan pencarian operator berdasar id
+    try:
+        cari_materi = model.mawaris.atur.cari(id)
+    except:
+
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Pastikan berhasil
+    if cari_materi is None:
+        # return render_template('materi/tilawah/tema/edit_Tulisan2.html/', form=form, data=cari_materi)
+        # return cari_materi
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Load template
+    # parameter title dikirim untuk mengisi nilai variabel title di template
+    return render_template('materi/mawaris/tema/edit_Tulisan.html/', form=form, data=cari_materi)
+
+
+# @mawaris.route('/updatetulisan/<int:id>/<int:idTema>', methods=["POST"])
+# def ubah_tulisan(id, idTema):
+#     client = datastore.Client()
+#     key = client.key(materiMawaris_KIND, id)
+#     entity = datastore.Entity(key=key)
+#     entity.update({
+#         'judul': request.form['judul'],
+#         # 'tema':  request.form['tema'],
+#         'tulisan': request.form['tulisan'],
+#     })
+#     client.put(entity)
+
+#     # data = MateriMawaris.update(id,
+#     #                             # request.form['idTema'],
+#     #                             request.form['judul_tulisan'],
+#     #                             # request.form['author'],
+#     #                             # request.form['judul_video'],
+#     #                             request.form['tema'],
+#     #                             request.form['tulisan'],
+#     #                             # request.form['video']
+#     #                             )
+
+#     return redirect('/mawaris/detail_tulisan/' + str(idTema))
+
+@mawaris.route('/updatetulisan/<int:id>/<int:idTema>', methods=["POST"])
+def ubah_tulisan(id, idTema):
+    Tema = request.form['idTema']
+    # return Tema
+    client = datastore.Client()
+    query = client.query(kind=mawaris_KIND)
+    query.add_filter("tema", "=", Tema)
+    data1 = list(query.fetch())
+    Judul = request.form['judul']
+    Tulisan = request.form['tulisan']
+    idTema = str(data1[0].id)
+    # return idTema
+
+    hasil = {}
+    hasil["judul"] = Judul
+    hasil["tulisan"] = Tulisan
+    hasil['author'] = ""
+    hasil['video'] = ""
+    hasil["tema"] = Tema
+    hasil["idTema"] = int(idTema)
+
+    client = datastore.Client()
+    # Minta dibuatkan Key/Id baru untuk object baru
+    key = client.key(materiMawaris_KIND, id)
+
+    # Minta dibuatkan entity di datastore memakai key baru
+    entity = datastore.Entity(key=key)
+    # Simpan object Permintaan ke entity baru
+    entity.update(hasil)
+    # Simpan entity ke datastore
+    client.put(entity)
+
+    return redirect('/mawaris/detail_tulisan/' + str(idTema))

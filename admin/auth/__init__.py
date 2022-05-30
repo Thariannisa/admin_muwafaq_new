@@ -4,4 +4,4 @@ from root.directories import TEMPLATE_DIR, APP_DIRS
 __app_name = 'auth'
 
 auth = Blueprint(__app_name, __name__,
-                template_folder=TEMPLATE_DIR / APP_DIRS[__app_name])
+                 template_folder=TEMPLATE_DIR / APP_DIRS[__app_name])

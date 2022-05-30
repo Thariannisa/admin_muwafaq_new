@@ -1,18 +1,18 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('index') }}">
-                <i class="mdi mdi-grid-large menu-icon"></i>
-                <span class="menu-title">Dashboard</span>
+        <li class="nav-item {% if title == "beranda" %} active {% endif %}">
+            <a class="nav-link " href="{{ url_for('index') }}">
+                <i class="menu-icon mdi mdi-home "></i>
+                <span class="menu-title">Beranda</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {% if title == "Modul" or title == "tambah modul" %} active {% endif %}">
             <a class="nav-link" href="{{ url_for('modul.mainModul') }}">
-                <i class="menu-icon mdi mdi-file-document"></i>
+                <i class="menu-icon mdi mdi-library-books"></i>
                 <span class="menu-title">Modul MFQ</span>
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
                 <i class="menu-icon mdi mdi-chart-line"></i>
                 <span class="menu-title">Materi</span>
@@ -40,18 +40,20 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ url_for('tajwid.maintajwid') }}">Tajwid</a></li>
                 </ul>
             </div>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        
+        <li class="nav-item {% if title == "Latihan" or title == "tambah latihan" %} active {% endif %} ">
             <a class="nav-link" href="{{ url_for('latihan.mainlatihan') }}">
-                <i class="menu-icon mdi mdi-file-document"></i>
+                <i class="menu-icon mdi mdi-clipboard-text"></i>
                 <span class="menu-title">Latihan</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {% if title == "Diskusi" or title == "tambah diskusi" %} active {% endif %}">
             <a class="nav-link" href="{{ url_for('diskusi.maindiskusi') }}">
-                <i class="menu-icon mdi mdi-file-document"></i>
+                <i class="menu-icon mdi mdi-account-multiple-plus"></i>
                 <span class="menu-title">Diskusi</span>
             </a>
         </li>
     </ul>
 </nav>
+

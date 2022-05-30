@@ -39,9 +39,12 @@
                             
                             <div class="form-group">
                                 <label for="exampleInputName1">Tulisan</label>
-                                <input type="text" class="form-control" 
-                                    name="tulisan" value="{{hasil['tulisan']}}">
-                            </div>
+                                <textarea id="tulisan" name="tulisan" rows="8" cols="100" > 
+                                    {{hasil['tulisan']}}
+</textarea>
+                            <!-- //     <input type="text" class="form-control" 
+                            //         name="tulisan" value="{{hasil['tulisan']}}">
+                            // </div> -->
                             
                             <button class="btn btn-utama me-2" type="submit">Submit</button>
                             <!-- <a href="{{ url_for('tilawah.maintilawah') }}" class="btn btn-primary me-2">Submit</a> -->

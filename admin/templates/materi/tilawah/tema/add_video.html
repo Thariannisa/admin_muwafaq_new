@@ -1,15 +1,5 @@
 {% extends 'layout.html'%}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin2 </title>
-</head>
-
-<body>
     {% block content %}
     <div class="content-wrapper">
         <div class="row">
@@ -65,7 +55,7 @@
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                {{ form.video(class="form-control file-upload-info") }}
+                                {{ form.video(class="form-control file-upload-info", accept="video/mp4,video/x-m4v,video/MOV,video/*") }}
                                 {% endif %}
                             </div>
                             <button class="btn btn-utama me-2" type="submit">Submit</button>
@@ -76,6 +66,9 @@
             </div>
         </div>
     </div>
+    
     {% endblock content %}
-</body>
-</html>
+    {% block script %}
+    
+    {% endblock script %}
+

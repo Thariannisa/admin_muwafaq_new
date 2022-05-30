@@ -9,7 +9,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-  <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{url_for('static', filename='data_table/datatables.min.css')}}">
+  
   <title> Latihan </title>
 
 </head>
@@ -43,11 +44,11 @@
                           </div>
                         </div>
                         <div class="table-responsive">
-                          <table id="sample_data" class="table table-striped table-hover table-bordered" width="100%">
+                          <table id="sample_data" class="table table-striped table-hover table-bordered" >
                             <thead>
                               <tr style="text-align:Center">
-                                <th width="2%">No</th>
-                                <th width="20.33%">Pertanyaan</th>
+                                <th >No</th>
+                                <th >Pertanyaan</th>
                                 <th >Pilihan 1</th>
                                 <th >Pilihan 2</th>
                                 <th >Pilihan 3</th>
@@ -56,9 +57,7 @@
                                 <th >aksi</th>
                               </tr>
                             </thead>
-
                             <tbody>
-
                               {% for  x in data %}
                               <tr>
                                 <td>
@@ -67,7 +66,7 @@
                                 </div>
                                   
                                 </td>
-                                <td>
+                                <td >
                                 <div  style="white-space: normal">
                                 <div style="word-break:break-all"> {{x['pertanyaan']}} </div>
                                 </div>
@@ -103,13 +102,14 @@
                                 <div style="word-break:break-all"> {{x['jawaban']}} </div>
                                 </div>
                                 </td>
-                                <td>
-                                  <a href="{{url_for('latihan.deleteLatihan', id=x.id )}}"
-                                    class="btn btn-inverse-success btn-fw">Edit</a>
+                                <td  >
+                                  <a href="{{url_for('latihan.edit_latihan', id=x.id )}}"
+                                    class="btn btn-inverse-success btn-fw" style="padding: 8px;">Edit</a>
                                   <button type="button" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal{{x.id}}">
+                                    data-bs-target="#exampleModal{{x.id}}" style="padding: 8px;">
                                     Hapus
                                   </button>
+                                  
                                 </td>
                               </tr>
                               {% endfor %}
@@ -153,46 +153,28 @@
 
   </div>
   {% endblock content %}
+  {% block script %}
   <script>
     $('#sample_data').DataTable({
       "scrollX": true,
       "bAutoWidth": false,
-      // "sScrollY": "200px",
       "bScrollCollapse": true,
-      "lengthChange": false,
-      "bInfo": false,
-      // dom: 'Bfrtip',
-      // buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-      // dom: 'Bfrtip',
-      // "<'row'<'col-md-3'l><'col-md-5'B><'col-md-4'f>>" +
-      // "<'row'<'col-md-12'tr>>" +
-      // "<'row'<'col-md-5'i><'col-md-7'p>>",
-      // lengthMenu: [
-      //   [10, 25, 50, 100, -1],
-      //   [10, 25, 50, 100, "All"]
-      // ],
-
-      "bPaginate": false,
       "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
         $('td:eq(0)', nRow).html(iDisplayIndexFull + 1);
       }
-
-      //   "bJQueryUI": true,
-      //   "aoColumnDefs": [
-      //       { "sWidth": "10%", "aTargets": [ -1 ] }
-      //   ]
     });
+   
   </script>
+ 
+  {% endblock %}
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
   </script>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-  <script src=https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js></script>
-  
-    $(document).ready(function() {
-    $('#sample_data').DataTable();
-    } );
+   <script src="{{url_for('static', filename='data_table/datatables.min.js')}}"></script>
+
+    
 </body>
 
 </html>

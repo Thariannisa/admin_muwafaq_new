@@ -1,4 +1,8 @@
 from flask import redirect, render_template, request
+
+from api.model.admin import model
+from api import model
+from api.model.diskusi.model import Diskusi, diskusi_KIND
 from . import diskusi
 from google.cloud import datastore
 from form.forms import (
@@ -21,13 +25,13 @@ def maindiskusi():
             "platform": data['platform'],
             "keterangan": data['keterangan']
         })
-    return render_template('diskusi/index_diskusi.html',  data=hasil_baru)
+    return render_template('diskusi/index_diskusi.html',  data=hasil_baru, title="Diskusi")
 
 
 @diskusi.route('/tambahplatform')
 def addPlatform():
     form = AddDiskusiForm()
-    return render_template('diskusi/create_diskusi.html', form=form)
+    return render_template('diskusi/create_diskusi.html', form=form, title="tambah diskusi")
 
 
 @diskusi.route('/daftarplatform', methods=['POST'])
@@ -70,30 +74,46 @@ def delete(id):
     else:
         return "gagal"
 
-# @diskusi.route('/edit/<int:id>')
-# def edit(id):
-#     return render_template('/diskusi/edit_diskusi.html')
-# # def update(id):
-# #     # data = request.get_json()
-# #     data = diskusi.update(
-# #         id,
-# #         data["platform"],
-# #         data["link"],
-# #     )
-# # return data, 200
-# # update
+
+@diskusi.route('/edit_diskusi/<int:id>',  methods=["GET", "POST"])
+def edit_diskusi(id):
+
+    # Lakukan pencarian berdasar id
+    try:
+        cari_diskusi = model.diskusi.atur.cari(id)
+    except:
+
+        return f"Gagal mencari diskusi dengan id: {id}.", 400
+    # Pastikan berhasil
+    if cari_diskusi is None:
+        # return render_template('materi/tilawah/tema/edit_Tulisan2.html/', form=form, data=cari_materi)
+        # return cari_materi
+        return f"Gagal mencari diskusi dengan id: {id}.", 400
+    # Load template
+    # parameter title dikirim untuk mengisi nilai variabel title di template
+    return render_template('diskusi/edit_diskusi.html/', data=cari_diskusi)
 
 
-# @diskusi.route('/update/<int:id>', methods=['POST'])
-# def update(id):
-#     # Buat object hanya jika kedua data ada
-#     if id != None:
-#         # Sambung ke datastore
-#         client = datastore.Client()
-#         entity = client.get(client.key(diskusi_KIND, id))
-#         if entity != None:
-#             entity["platform"],
-#             entity["link"],
+@diskusi.route('/updatediskusi/<int:id>', methods=["POST"])
+def ubah_diskusi(id):
+    client = datastore.Client()
+    key = client.key(diskusi_KIND, id)
+    entity = datastore.Entity(key=key)
+    entity.update({
+        'link': request.form['link'],
+        'platform': request.form['platform'],
+        'keterangan': request.form['keterangan'],
+    })
+    client.put(entity)
 
-#             client.put(entity)
-#             return redirect('/diskusi')
+    # data = MateriMawaris.update(id,
+    #                             # request.form['idTema'],
+    #                             request.form['judul_tulisan'],
+    #                             # request.form['author'],
+    #                             # request.form['judul_video'],
+    #                             request.form['tema'],
+    #                             request.form['tulisan'],
+    #                             # request.form['video']
+    #                             )
+
+    return redirect('/diskusi')

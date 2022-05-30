@@ -65,7 +65,7 @@
                                         {% endfor %}
                                     </div>
                                     {% else %}
-                                    {{ form.video(class="form-control file-upload-info") }}
+                                    {{ form.video(class="form-control file-upload-info", accept="video/mp4,video/x-m4v,video/MOV,video/*") }}
                                     {% endif %}
                             </div>
                             <button class="btn btn-utama me-2" type="submit">Submit</button>

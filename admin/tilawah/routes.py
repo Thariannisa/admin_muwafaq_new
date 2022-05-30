@@ -33,7 +33,7 @@ def maintilawah():
             "konten": data['konten'],
             "tema": data['tema']
         })
-    return render_template('tilawah/index_tilawah.html', data=hasil_baru)
+    return render_template('tilawah/index_tilawah.html', data=hasil_baru, title="tilawah")
 
 
 @tilawah.route('/tambahtema')
@@ -271,7 +271,7 @@ def uploadVideo(request):
         return ""
     try:
         split = os.path.splitext(uploaded_file.filename)
-        if split[1] not in [".mp4"]:
+        if split[1] not in [".mp4", ".MOV"]:
             return None
 
         # check size

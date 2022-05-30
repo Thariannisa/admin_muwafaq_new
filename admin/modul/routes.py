@@ -23,13 +23,13 @@ def mainModul():
             "PDF": data['PDF'],
 
         })
-    return render_template('modul/index_modul.html', data=hasil_baru)
+    return render_template('modul/index_modul.html', data=hasil_baru, title="Modul")
 
 
 @modul.route('/tambahmodul')
 def addModul():
     form = AddModulForm()
-    return render_template('modul/createmodul.html', form=form)
+    return render_template('modul/createmodul.html', form=form, title="tambah modul")
 
 
 @modul.route('/daftarmodul', methods=['POST'])
@@ -78,7 +78,7 @@ def uploadPDF(request):
         # check size
         read = uploaded_file.read()
         size = len(read)
-        if size >= 4000000:  # 4 mb
+        if size >= 20000000:  # 20 mb
             return None
 
         # Create a Cloud Storage client.

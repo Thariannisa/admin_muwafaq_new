@@ -1,0 +1,65 @@
+
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Edit Tulisan </title>
+</head>
+
+<body>
+    {% block content %}
+    <div class="content-wrapper">
+        
+         {% for hasil in data %}
+       
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">edit tulisan</h4>
+                        
+                        <form class="forms-sample"
+                            action="/mawaris/updatetulisan/{{hasil['id']}}/{{hasil['idTema']}}"
+                            method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleInputName1" class="form-label">Tema<span
+                                        class="text-danger"></span></label>
+                                <select class="form-control" name="idTema">
+                                    {% for x in data %}
+                                    <option value="{{x['tema']}}">{{x['tema']}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName1">Judul</label>
+                                <input type="text" class="form-control" 
+                                    name="judul" value="{{hasil['judul']}}"> 
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="exampleInputName1">Tulisan</label>
+                                <!-- <textarea id="tulisan" name="tulisan" rows="8" cols="100" > 
+                                    {{hasil['tulisan']}}
+</textarea> -->
+                                <input type="text" class="form-control" 
+                                    name="tulisan" value="{{hasil['tulisan']}}">
+                                </div>
+                            
+                            <button class="btn btn-utama me-2" type="submit">Submit</button>
+                            <!-- <a href="{{ url_for('tilawah.maintilawah') }}" class="btn btn-primary me-2">Submit</a> -->
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    {% endblock content %}
+</body>
+
+</html>

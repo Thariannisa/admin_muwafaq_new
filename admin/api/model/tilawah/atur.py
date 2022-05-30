@@ -64,63 +64,6 @@ def cari(id):
         return data_materi
 
 
-# def cari(id):
-
-#     # cek parameter agar tidak kosong
-#     if id is not None:
-#         # Buka koneksi ke datastore
-#         client = datastore.Client()
-#         # Minta dibuatkan key baru berdasarkan id
-#         key_materi_tilawah = client.key(materiTilawah_KIND, id)
-#         # ambil hasil carinya berdasarkan key yang dibuat
-#         hasil = client.get(key_materi_tilawah)
-#         # jika tidak ditemukan, bangkitkan exception
-#         if hasil is None:
-#             raise EntityNotFoundException(
-#                 f"Tidak ada materi dengan id: {id}.")
-#         # buat list
-#         data_materi = []
-#         # buat objek materi
-#         materi_tilawah = MateriTilawah(id=hasil.id,
-#                                        idTema=hasil["idTema"],
-#                                        judul=hasil["judul"],
-#                                        #   date_created=hasil["date_created"],
-#                                        author=hasil["author"],
-#                                        tema=hasil["tema"],
-#                                        tulisan=hasil["tulisan"],
-#                                        video=hasil["video"])
-#         # ubah format data ke dictionary dan append ke list
-#         data_materi.append(materi_tilawah)
-#         # kembalikan data materi
-#         return data_materi
-
-
-# def ubah(id, edit_tulisan):
-
-#     # Buka koneksi ke datastore
-#     client = datastore.Client()
-#     # cari/filter data materi berdasar property id
-#     key_materi_tilawah = client.key(materiTilawah_KIND, id)
-#     #  ambil hasil carinya
-#     hasil = client.get(key_materi_tilawah)
-#     # jika tidak ditemukan, bangkitkan exception
-#     if hasil is None:
-#         raise EntityNotFoundException(f"Tidak ada materi dengan id: {id}.")
-#     # Simpan
-#     hasil.update(edit_tulisan)
-#     client.put(hasil)
-#     # kembalikan data materi
-#     return MateriTilawah(id=hasil.id,
-#                          idTema=hasil["idTema"],
-#                          judul_tulisan=hasil["judul_tulisan"],
-#                          #   date_created=hasil["date_created"],
-#                          author=hasil["author"],
-#                          judul_video=hasil["judul_video"],
-#                          tema=hasil["tema"],
-#                          tulisan=hasil["tulisan"],
-#                          video=hasil["video"])
-
-
 def ubah(id, edit_tulisan):
     # Buka koneksi ke datastore
     client = datastore.Client()
