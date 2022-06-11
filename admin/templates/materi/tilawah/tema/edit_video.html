@@ -1,0 +1,87 @@
+
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Edit Tulisan </title>
+</head>
+
+<body>
+    {% block content %}
+    <div class="content-wrapper">
+        
+         {% for hasil in data %}
+       
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">edit Tema</h4>                    
+                        <form class="forms-sample"
+                            action="/tilawah/updatevideo/{{hasil['id']}}/{{hasil['idTema']}}"
+                            method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleInputName1" class="form-label">Tema<span
+                                        class="text-danger"></span></label>
+                                <select class="form-control" name="idTema">
+                                    {% for x in data %}
+                                    <option value="{{x['tema']}}">{{x['tema']}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                {{ form.judul.label(class='form-control-label') }}
+                                {% if form.judul.errors %}
+                                {{form.judul(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.judul.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.judul(class="form-control", value=hasil.judul) }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.author.label(class='form-control-label') }}
+                                {% if form.author.errors %}
+                                {{form.author(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.author.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.author(class="form-control", value=hasil.author) }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.video.label(class='form-control-label') }}
+                                {% if form.video.errors %}
+                                {{form.video(class="form-control file-upload-info")}}
+                                <span class="input-group-append">
+                                    <div class="invalid-feedback">
+                                        {% for error in form.video.errors %}
+                                        <span> {{ error }} </span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.video(class="form-control file-upload-info", value=hasil.video, accept="video/mp4,video/x-m4v,video/MOV,video/*") }}
+                                    {% endif %}
+                            </div>
+                            <button class="btn btn-utama me-2" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    {% endblock content %}
+</body>
+
+</html>

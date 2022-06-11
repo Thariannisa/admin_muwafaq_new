@@ -90,6 +90,32 @@ def ubah(id, edit_tulisan):
                          video=hasil["video"])
 
 
+def ubah_video(id, edit_video):
+    # Buka koneksi ke datastore
+    client = datastore.Client()
+    # cari/filter data penindaklanjut berdasar property id
+    key_materimawaris = client.key(materiMawaris_KIND, id)
+    #  ambil hasil carinya
+    hasil = client.get(key_materimawaris)
+    # jika tidak ditemukan, bangkitkan exception
+    if hasil is None:
+        raise EntityNotFoundException(
+            f"Tidak ada materi dengan id: {id}.")
+    # Simpan
+    hasil.update(edit_video)
+    client.put(hasil)
+    # kembalikan data penindaklanjut
+    return MateriMawaris(id=id,
+                         idTema=hasil["idTema"],
+                         judul_tulisan=hasil["judul_tulisan"],
+                         #   date_created=hasil["date_created"],
+                         author=hasil["author"],
+                         judul_video=hasil["judul_video"],
+                         tema=hasil["tema"],
+                         tulisan=hasil["tulisan"],
+                         video=hasil["video"])
+
+
 def update(id, idTema, judul_tulisan, author, judul_video, video, tema, tulisan, ubah_tulisan):
     # Buat object hanya jika kedua data ada
     if id != None:

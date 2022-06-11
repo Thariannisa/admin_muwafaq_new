@@ -16745,6 +16745,19 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 .text-black {
   --bs-text-opacity: 1;
   color: rgba(var(--bs-black-rgb), var(--bs-text-opacity)) !important;
+  font-family: cursive;
+}
+
+.text-grey {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-grey-rgb), var(--bs-text-opacity)) !important;
+  font-family: cursive;
+}
+
+.text-utama {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-black-rgb), var(--bs-text-opacity)) !important;
+  font-size: 10
 }
 
 .text-white {
@@ -20825,6 +20838,7 @@ code {
   font-size: 20px;
   line-height: 40px;
   text-align: justify;
+  font-family: cursive;
 }
 
 .home-tab .chartjs-legend ul {

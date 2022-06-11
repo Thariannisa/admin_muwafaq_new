@@ -1,0 +1,57 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin</title>
+</head>
+<body>
+    {% block content %}
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-10 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Admin</h4>
+                        <form class="forms-sample" action="daftar_admin" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                {{ form.nama.label(class='form-control-label') }}
+                                {% if form.nama.errors %}
+                                {{form.nama(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.nama.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.nama(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.email.label(class='form-control-label') }}
+                                {% if form.email.errors %}
+                                {{form.email(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.email(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="field-group">
+                                {{form.submit(class='btn btn-utama me-2')}}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+</body>
+
+</html>

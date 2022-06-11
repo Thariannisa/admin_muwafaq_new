@@ -21,25 +21,69 @@
                         <form class="forms-sample" action="/latihan/updatelatihan/{{hasil['id']}}" method="POST"
                             enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="exampleInputName1">Pertanyaan</label>
-                                <input type="text" class="form-control" name="pertanyaan" value="{{hasil['pertanyaan']}}">
-                            </div>   
-                            <div class="form-group">
-                                <label for="exampleInputName1">Pilihan 1</label>
-                                <input type="text" class="form-control" name="pilihan1" value="{{hasil['pilihan1']}}">
+                                {{ form.pertanyaan.label(class='form-control-label') }}
+                                {% if form.pertanyaan.errors %}
+                                {{form.pertanyaan(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pertanyaan.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pertanyaan(class="form-control", value=hasil.pertanyaan) }}
+                                {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputName1">Pilihan 2</label>
-                                <input type="text" class="form-control" name="pilihan2"
-                                    value="{{hasil['pilihan2']}}">
+                                {{ form.pilihan1.label(class='form-control-label') }}
+                                {% if form.pilihan1.errors %}
+                                {{form.pilihan1(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan1.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan1(class="form-control", value=hasil.pilihan1) }}
+                                {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputName1">Pilihan 3</label>
-                                <input type="text" class="form-control" name="pilihan3" value="{{hasil['pilihan3']}}">
+                                {{ form.pilihan2.label(class='form-control-label') }}
+                                {% if form.pilihan2.errors %}
+                                {{form.pilihan2(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan2.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan2(class="form-control", value=hasil.pilihan2) }}
+                                {% endif %}
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputName1">Pilihan 4</label>
-                                <input type="text" class="form-control" name="pilihan4" value="{{hasil['pilihan4']}}">
+                                {{ form.pilihan3.label(class='form-control-label') }}
+                                {% if form.pilihan3.errors %}
+                                {{form.pilihan3(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan3.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan3(class="form-control", value=hasil.pilihan3 ) }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.pilihan4.label(class='form-control-label') }}
+                                {% if form.pilihan4.errors %}
+                                {{form.pilihan4(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.pilihan4.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.pilihan4(class="form-control", value=hasil.pilihan4) }}
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputName1" class="form-label">Jawaban<span

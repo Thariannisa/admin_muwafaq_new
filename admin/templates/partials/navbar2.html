@@ -17,12 +17,11 @@
     <div class="navbar-menu-wrapper d-flex align-items-top">
         <ul class="navbar-nav">
             <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-                <h3  class="text-black fw-bold"> Ta'allam katsiran,  <h3/>                   
+                <h3  class="text-black fw-bold"> Ta'allam katsiran
+                    <h3/>                   
                         <p>
-                            <h3>Tafham Jayyidan</h3>
+                            <h3 class="text-grey fw-bold">Tafham Jayyidan</h3>
                         </p>
-                    
-            
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">
@@ -34,12 +33,12 @@
                     <input type="text" class="form-control">
                 </div>
             </li>
-            
-            <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-                <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="img-xs rounded-circle"
+            <li class="nav-item">
+            <a class="nav-link " href="{{url_for('auth.logout')}}">
+                <img class="img-xs rounded-circle"
                         src="{{url_for('static', filename='starAdmin/assets/images/logout_admin.png')}}"
-                        alt="Profile image"> </a>
+                        alt="Profile image">
+            </a>
             </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"

@@ -1,12 +1,11 @@
 from root import app
-from root import models
 from root import routes
 from dotenv import load_dotenv
 from root.directories import BASE_DIR
 import os
 
-credential_path = "C:\gcloud_key\TA\key.json"
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
+# credential_path = "C:\gcloud_key\TA\key.json"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 
 load_dotenv(BASE_DIR / '.env')
 

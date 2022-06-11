@@ -20,5 +20,8 @@ class LoginForm(FlaskForm):
     password = PasswordField(
         validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "Masukkan password"}
     )
+    nama = StringField(
+        label="Nama", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan nama"}
+    )
 
     submit = SubmitField(label="MASUK")

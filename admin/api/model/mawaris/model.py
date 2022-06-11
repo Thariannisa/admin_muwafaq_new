@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 # Nama kind untuk entity ini
 materiMawaris_KIND = "materi_mawaris"
+mawaris_KIND = "mawaris"
 
 
 # Class Permintaan

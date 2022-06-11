@@ -51,7 +51,13 @@
         <li class="nav-item {% if title == "Diskusi" or title == "tambah diskusi" %} active {% endif %}">
             <a class="nav-link" href="{{ url_for('diskusi.maindiskusi') }}">
                 <i class="menu-icon mdi mdi-account-multiple-plus"></i>
-                <span class="menu-title">Diskusi</span>
+                <span class="menu-title">Layanan</span>
+            </a>
+        </li>
+        <li class="nav-item {% if title == "admin" or title == "tambah admin" %} active {% endif %}">
+            <a class="nav-link" href="{{ url_for('auth.listAdmin') }}">
+                <i class="menu-icon mdi mdi-account-multiple-plus"></i>
+                <span class="menu-title">Tambah Admin</span>
             </a>
         </li>
     </ul>

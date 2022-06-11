@@ -13,7 +13,7 @@ from wtforms import (
 
 )
 from flask_ckeditor import CKEditorField
-
+from wtforms.fields import TextAreaField
 
 from wtforms.fields.numeric import IntegerField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Regexp, Email
@@ -39,14 +39,29 @@ class KontenVideoForm(FlaskForm):
     judul = StringField(
         label="Judul", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan judul video"}
     )
+    # author = StringField(
+    #     label="Author", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan nama author"}
+    # )
     author = StringField(
-        label="Author", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan nama author"}
+        label="Author", validators=[Length(min=3, max=25)], render_kw={"placeholder": "masukkan nama author"}
     )
-
+    tulisan = TextAreaField('tulisan', widget=TextArea(), validators=[Length(
+        min=3, max=1300)],  render_kw={"placeholder": "masukkan pembahasan"})
     video = FileField('Upload Video', validators=[
         FileRequired(),
         FileAllowed(['mp4'], 'Images only!')
     ])
+    video = FileField('Upload Video', validators=[
+        FileAllowed(['mp4'], 'Images only!')
+    ])
+    # video = URLField(
+    #     label="Link", validators=[Length(min=3, max=70), Regexp('^(http|https):\/\/[\w.\-]+(\.[\w.\-]+)+.*$', 0,
+    #                                                             'URL must be a valid link')], render_kw={"placeholder": "Masukkan Link Diskusi"}
+    # )
+    # video = URLField(
+    #     label="Link", validators=[DataRequired("link is Required"), Length(min=3, max=70), Regexp('^(http|https):\/\/[\w.\-]+(\.[\w.\-]+)+.*$', 0,
+    #                                                                                               'URL must be a valid link')], render_kw={"placeholder": "Masukkan Link Diskusi"}
+    # )
 
 
 class AddTemaForm(FlaskForm):
@@ -109,5 +124,23 @@ class LoginForm(FlaskForm):
     password = PasswordField(
         validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "Masukkan password"}
     )
+    nama = StringField(
+        label="Nama", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan nama"}
+    )
 
     submit = SubmitField(label="MASUK")
+
+
+class EditTulisanForm(FlaskForm):
+    judul = StringField(
+        label="Judul", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan judul tulisan"}
+    )
+    # tulisan = CKEditorField(
+    #     label="Tulisan", validators=[DataRequired(), Length(min=3, max=800)], render_kw={"placeholder": "masukkan pembahasan"}
+    # )
+    tulisan = StringField(
+        label="Tulisan",  validators=[DataRequired(), Length(min=3, max=1300)], render_kw={"placeholder": "masukkan judul tulisan"}
+    )
+    # tulisan = StringField(
+    #     label="Tulisan", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan tulisan"}
+    # )

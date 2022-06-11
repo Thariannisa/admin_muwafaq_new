@@ -2,19 +2,21 @@ import datetime
 import os
 from flask import flash, render_template, request, redirect
 from . import fiqh
+from api.model.admin.check_login import check_login
+from api.model.fiqh.model import MateriFiqh, materiFiqh_KIND, fiqh_KIND
+from api import model
+from api.model.exception.model import EntityNotFoundException
 from form.forms import (
-    AddTemaForm,
     KontenTulisanForm,
     KontenVideoForm,
 )
 from google.cloud import datastore
 from google.cloud import storage
-fiqh_KIND = "FIQH"
-materiFiqh_KIND = "MATERI_FIQH"
 
 
 @fiqh.route('/')
-def mainfiqh():
+@check_login
+def mainfiqh(datafiqh):
     client = datastore.Client()
     query = client.query(kind=fiqh_KIND)
     hasil = query.fetch()
@@ -25,26 +27,21 @@ def mainfiqh():
             "konten": data['konten'],
             "tema": data['tema']
         })
-    return render_template('fiqh/index_fiqh.html', data=hasil_baru)
-    # return render_template('materi/fiqh/tema/detail_tulisan.html')
+    return render_template('materi/fiqh/index_fiqh.html', data=hasil_baru, title="Fiqh")
 
 
 @fiqh.route('/tambahtema')
 def addTema():
-
-    return render_template('materi/fiqh/tema/add_tema.html')
+    return render_template('materi/fiqh/tema/add_tema.html', title="tambah tema fiqh")
 
 
 @fiqh.route('/daftartema', methods=['POST'])
 def daftartema():
     Tema = request.form['tema']
     jenis_konten = request.form['konten']
-
     hasil = {}
-
     hasil["tema"] = Tema
     hasil["konten"] = jenis_konten
-
     client = datastore.Client()
     # Minta dibuatkan Key/Id baru untuk object baru
     key_baru = client.key(fiqh_KIND)
@@ -54,8 +51,6 @@ def daftartema():
     entity_baru.update(hasil)
     # Simpan entity ke datastore
     client.put(entity_baru)
-    # return render_template('modul/index_modul.html')
-    # return hasil
     return redirect('/fiqh')
 
 
@@ -66,11 +61,7 @@ def detailTemaVideo(idTema):
     query = client.query(kind=materiFiqh_KIND)
     query.add_filter("idTema", "=", idTema)
     hasil = query.fetch()
-
     res = client.get(client.key(fiqh_KIND, idTema))
-    # if res == None:
-    #     return "tidak ada"
-
     hasil_baru = []
     for data in hasil:
         hasil_baru.append({
@@ -82,12 +73,10 @@ def detailTemaVideo(idTema):
             "tema": data['tema']
         })
     context = {
-
         "data": hasil_baru,
         "tema": res["tema"],
         "konten": res["konten"],
     }
-    # return str(hasil_baru)
     return render_template('materi/fiqh/tema/tema_video.html', data=context)
 
 
@@ -103,13 +92,12 @@ def addKontenVideo():
             "tema": data['tema'],
             "idTema": data.id
         })
-    return render_template('materi/fiqh/tema/add_video.html', data=hasil_tema, form=form)
+    return render_template('materi/fiqh/tema/add_video.html', data=hasil_tema, form=form, title="tambah materi fiqh")
 
 
 @fiqh.route('/daftarvideo', methods=['POST'])
 def daftarKontenVideo():
     Tema = request.form['idTema']
-    # return Tema
     client = datastore.Client()
     query = client.query(kind=fiqh_KIND)
     query.add_filter("tema", "=", Tema)
@@ -118,9 +106,6 @@ def daftarKontenVideo():
     author = request.form['author']
     Video = uploadVideo(request)
     idTema = str(data1[0].id)
-    # return idTema
-    if Video == None:
-        return ""
     hasil = {}
     hasil["judul"] = Judul
     hasil["author"] = author
@@ -128,25 +113,17 @@ def daftarKontenVideo():
     hasil["tema"] = Tema
     hasil["idTema"] = int(idTema)
     hasil["video"] = Video
-    if Video == None:
-        return ""
 
     client = datastore.Client()
     # Minta dibuatkan Key/Id baru untuk object baru
     key_baru = client.key(materiFiqh_KIND)
-
     # Minta dibuatkan entity di datastore memakai key baru
     entity_baru = datastore.Entity(key=key_baru)
     # Simpan object Permintaan ke entity baru
     entity_baru.update(hasil)
     # Simpan entity ke datastore
     client.put(entity_baru)
-    # return render_template('modul/index_modul.html')
-    # return hasil
     return redirect('/fiqh/detail_video/' + idTema)
-
-# return render_template('materi/fiqh/tema/detail_tema_video.html', data=entity_baru)
-# return render_template('materi/fiqh/tema/add_konten_video.html')
 
 
 @fiqh.route('/tambahpembahasan')
@@ -161,14 +138,12 @@ def addKontenTulisan():
             "tema": data['tema'],
             "idTema": data.id
         })
-    return render_template('materi/fiqh/tema/add_Tulisan.html', data=hasil_tema, form=form)
+    return render_template('materi/fiqh/tema/add_Tulisan.html', data=hasil_tema, form=form, title="tambah materi fiqh")
 
 
 @fiqh.route('/daftartulisan', methods=['POST'])
 def daftarKontenTulisan():
-
     Tema = request.form['idTema']
-    # return Tema
     client = datastore.Client()
     query = client.query(kind=fiqh_KIND)
     query.add_filter("tema", "=", Tema)
@@ -176,7 +151,6 @@ def daftarKontenTulisan():
     Judul = request.form['judul']
     Tulisan = request.form['tulisan']
     idTema = str(data1[0].id)
-    # return idTema
 
     hasil = {}
     hasil["judul"] = Judul
@@ -185,22 +159,15 @@ def daftarKontenTulisan():
     hasil['video'] = ""
     hasil["tema"] = Tema
     hasil["idTema"] = int(idTema)
-
-    # hasil["konten"] = Jenis_konten
-    # hasil["video"] = Video
-
     client = datastore.Client()
     # Minta dibuatkan Key/Id baru untuk object baru
     key_baru = client.key(materiFiqh_KIND)
-
     # Minta dibuatkan entity di datastore memakai key baru
     entity_baru = datastore.Entity(key=key_baru)
     # Simpan object Permintaan ke entity baru
     entity_baru.update(hasil)
     # Simpan entity ke datastore
     client.put(entity_baru)
-    # return render_template('modul/index_modul.html')
-    # return hasil
     flash("Your materi has been added!", "success")
     return redirect('/fiqh/detail_tulisan/' + idTema)
 
@@ -212,9 +179,7 @@ def detailTemaTulisan(idTema):
     query = client.query(kind=materiFiqh_KIND)
     query.add_filter("idTema", "=", idTema)
     hasil = query.fetch()
-
     res = client.get(client.key(fiqh_KIND, idTema))
-
     hasil_baru = []
     for data in hasil:
         hasil_baru.append({
@@ -225,13 +190,11 @@ def detailTemaTulisan(idTema):
             "tema": data['tema']
         })
     context = {
-
         "data": hasil_baru,
         "tema": res["tema"],
         "konten": res["konten"]
     }
-    # return (context)
-    return render_template('materi/fiqh/tema/tema_tulisan.html', data=context)
+    return render_template('materi/fiqh/tema/tema_tulisan.html', data=context, title="Fiqh")
 
 
 def uploadVideo(request):
@@ -257,7 +220,6 @@ def uploadVideo(request):
         blob = bucket.blob(split[0] + dt + split[1])
         blob.upload_from_string(read, content_type=uploaded_file.content_type)
         blob.make_public()
-
         # The public URL can be used to directly access the uploaded file via HTTP.
         return str(blob.public_url)
     except:
@@ -305,3 +267,95 @@ def deleteTema(id):
         if entity != None:
             client.delete(entity)
             return redirect('/fiqh')
+    else:
+        return "gagal"
+
+
+@fiqh.route('/edit_tulisan/<int:id>/<int:idTema>',  methods=["GET", "POST"])
+def edit_tulisan(id, idTema):
+    form = KontenTulisanForm()
+    # pencarian materi berdasarkan id
+    try:
+        cari_materi = model.fiqh.atur.cari(id)
+    except:
+
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Pastikan berhasil
+    if cari_materi is None:
+
+        return f"Gagal mencari materi dengan id: {id}.", 400
+
+    return render_template('materi/fiqh/tema/edit_Tulisan.html/', form=form, data=cari_materi, title="edit materi")
+
+
+@fiqh.route('/updatetulisan/<int:id>/<int:idTema>', methods=["POST"])
+def ubah_tulisan(id, idTema):
+    Tema = request.form['idTema']
+    client = datastore.Client()
+    query = client.query(kind=fiqh_KIND)
+    query.add_filter("tema", "=", Tema)
+    data1 = list(query.fetch())
+    Judul = request.form['judul']
+    Tulisan = request.form['tulisan']
+    idTema = str(data1[0].id)
+    hasil = {}
+    hasil["judul"] = Judul
+    hasil["tulisan"] = Tulisan
+    hasil['author'] = ""
+    hasil['video'] = ""
+    hasil["tema"] = Tema
+    hasil["idTema"] = int(idTema)
+    client = datastore.Client()
+    # Minta dibuatkan Key/Id baru untuk object baru
+    key = client.key(materiFiqh_KIND, id)
+    # Minta dibuatkan entity di datastore memakai key baru
+    entity = datastore.Entity(key=key)
+    # Simpan object Permintaan ke entity baru
+    entity.update(hasil)
+    # Simpan entity ke datastore
+    client.put(entity)
+    return redirect('/fiqh/detail_tulisan/' + str(idTema))
+
+
+@fiqh.route('/edit_video/<int:id>/<int:idTema>',  methods=["GET", "POST"])
+def edit_video(id, idTema):
+    form = KontenVideoForm()
+    try:
+        cari_materi = model.fiqh.atur.cari(id)
+    except:
+
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Pastikan berhasil
+    if cari_materi is None:
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    return render_template('materi/fiqh/tema/edit_video.html/', form=form, data=cari_materi, title="edit")
+
+
+@fiqh.route('/updatevideo/<int:id>/<int:idTema>', methods=["POST"])
+def ubah_video(id, idTema):
+    Tema = request.form['idTema']
+    client = datastore.Client()
+    query = client.query(kind=fiqh_KIND)
+    query.add_filter("tema", "=", Tema)
+    data1 = list(query.fetch())
+    Judul = request.form['judul']
+    author = request.form['author']
+    Video = uploadVideo(request)
+    idTema = str(data1[0].id)
+    hasil = {}
+    hasil["judul"] = Judul
+    hasil["author"] = author
+    hasil['tulisan'] = ""
+    hasil["tema"] = Tema
+    hasil["idTema"] = int(idTema)
+    hasil["video"] = Video
+    client = datastore.Client()
+    # Minta dibuatkan Key/Id baru untuk object baru
+    key = client.key(materiFiqh_KIND, id)
+    # Minta dibuatkan entity di datastore memakai key baru
+    entity = datastore.Entity(key=key)
+    # Simpan object Permintaan ke entity baru
+    entity.update(hasil)
+    # Simpan entity ke datastore
+    client.put(entity)
+    return redirect('/fiqh/detail_video/' + idTema)

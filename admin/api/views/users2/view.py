@@ -57,7 +57,6 @@ def login():
                     "id": hasil.id,
                     "nama": hasil.nama,
                     "email": hasil.email,
-                    # "kontak": hasil.kontak,
                     "image": hasil.image,
                     "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24),
                 },
@@ -117,19 +116,10 @@ def register():
             "message": "Password harus lebih dari 6 karakter",
             "code": 400
         }), 400
-        # False, {}, 400, "Password harus lebih dari 6 karakter"), 400,)
-    # if not isinstance(request.json["kontak"], (int)):
-    #     return (jsonify(False, {}, 400, "kontak"), 400, )
-    # if us.checkEmailExists(request.json["email"]):
-    #     return jsonify(False, {}, 400, "Email sudah ada!"), 400
-    # dafault untuk user
-
     image = "https://adipurwa.desa.id/wp-content/uploads/2018/12/default-staff-1.png"
 
     if parameter_baru is None:
         return jsonify(False, {}, 400, "Parameter salah"), 400
-
-    # id = parameter_baru["id"]
     nama = escape(parameter_baru["nama"].strip())
     email = request.json["email"]
     kontak = request.json["kontak"]
@@ -142,7 +132,6 @@ def register():
         return jsonify(False, {}, 400, "Gagal menambah data!"), 400
     if isinstance(hasil, (str)):
         return jsonify(True, {}, 400, hasil), 400
-    # return jsonify(True, {}, 200, "sukses mendaftar"), 400
     return jsonify({
         "success": True,
         "result": {},
@@ -150,20 +139,10 @@ def register():
         "code": 200}
     ), 400
 
-# # krm email kalau berhasil simpan ke db
-#     token = generate_confirmation_token(email),
-#     confirm_url = url_for('confirm_email', token=token, _external=True)
-#     template = render_template(
-#         'email/emailKonfirmasi.html', linkKonfirmasi=confirm_url)
-#     send_email(email, "muwafaq : Konfirmasi email anda", template)
-
-#     return (jsonify(True, {}, 400, "Sukses Mendaftar"), 400,)
-
 
 @users2.route('/daftar/<int:id>', methods=["GET"])
 def getId(id):
     daftara = us.getId(id)
-
     if daftara != None:
         return json.loads(json.dumps(daftara.__dict__)), 200
     else:
@@ -172,7 +151,6 @@ def getId(id):
 
 @ users2.route('/update/<int:id>', methods=["PUT"])
 def update(id):
-
     permintaan_baru = request.get_json()
     nama = escape(permintaan_baru["nama"].strip())
     data = us.update(
@@ -188,7 +166,6 @@ def update(id):
 
 @ users2.route('/delete/<int:id>', methods=["DELETE"])
 def delete(id):
-
     data = us.delete(id)
 
     return data, 200

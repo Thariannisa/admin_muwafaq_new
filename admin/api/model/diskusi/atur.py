@@ -22,16 +22,7 @@ def getId(id):
 
 
 def cari(id):
-    """
-    Mengambil salah satu entitas pada kind PENINDAKLANJUT_KIND berdasarkan property id
 
-    Parameter:
-        + id : id Penindaklanjut
-
-    Returns:
-        + List dictionary salah satu penindaklanjut
-
-    """
     if id is not None:
         # Buka koneksi ke datastore
         client = datastore.Client()
@@ -42,7 +33,7 @@ def cari(id):
         # jika tidak ditemukan, bangkitkan exception
         if hasil is None:
             raise EntityNotFoundException(
-                f"Tidak ada diskusis dengan id: {id}.")
+                f"Tidak ada diskusi dengan id: {id}.")
         # buat list
         data_diskusi = []
         # buat objek penindaklanjut

@@ -64,7 +64,7 @@ def cari(id):
         return data_materi
 
 
-def ubah(id, edit_tulisan):
+def ubah_tulisan(id, edit_tulisan):
     # Buka koneksi ke datastore
     client = datastore.Client()
     # cari/filter data penindaklanjut berdasar property id
@@ -77,6 +77,32 @@ def ubah(id, edit_tulisan):
             f"Tidak ada materi dengan id: {id}.")
     # Simpan
     hasil.update(edit_tulisan)
+    client.put(hasil)
+    # kembalikan data penindaklanjut
+    return MateriTilawah(id=id,
+                         idTema=hasil["idTema"],
+                         judul_tulisan=hasil["judul_tulisan"],
+                         #   date_created=hasil["date_created"],
+                         author=hasil["author"],
+                         judul_video=hasil["judul_video"],
+                         tema=hasil["tema"],
+                         tulisan=hasil["tulisan"],
+                         video=hasil["video"])
+
+
+def ubah_video(id, edit_video):
+    # Buka koneksi ke datastore
+    client = datastore.Client()
+    # cari/filter data penindaklanjut berdasar property id
+    key_materitilawah = client.key(materiTilawah_KIND, id)
+    #  ambil hasil carinya
+    hasil = client.get(key_materitilawah)
+    # jika tidak ditemukan, bangkitkan exception
+    if hasil is None:
+        raise EntityNotFoundException(
+            f"Tidak ada materi dengan id: {id}.")
+    # Simpan
+    hasil.update(edit_video)
     client.put(hasil)
     # kembalikan data penindaklanjut
     return MateriTilawah(id=id,

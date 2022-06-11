@@ -5,16 +5,17 @@ from xml.etree.ElementTree import dump
 from flask import flash, jsonify, render_template, request, redirect
 from api.model.latihan import model
 from api import model
+from api.model.admin.check_login import check_login
 from api.model.latihan.model import Latihan, latihan_KIND
 from form.forms import AddLatihanForm
 from . import latihan
 from google.cloud import datastore
 from google.cloud import storage
-latihan_KIND = "latihan"
 
 
 @latihan.route('/')
-def mainlatihan():
+@check_login
+def mainlatihan(datalatihan):
     client = datastore.Client()
     query = client.query(kind=latihan_KIND)
     hasil = query.fetch()
@@ -98,7 +99,7 @@ def deleteLatihan(id):
 
 @latihan.route('/edit_latihan/<int:id>',  methods=["GET", "POST"])
 def edit_latihan(id):
-
+    form = AddLatihanForm()
     # Lakukan pencarian berdasar id
     try:
         cari_latihan = model.latihan.atur.cari(id)
@@ -112,7 +113,7 @@ def edit_latihan(id):
         return f"Gagal mencari latihan dengan id: {id}.", 400
     # Load template
     # parameter title dikirim untuk mengisi nilai variabel title di template
-    return render_template('latihan/edit_latihan.html/', data=cari_latihan)
+    return render_template('latihan/edit_latihan.html/', form=form, data=cari_latihan)
 
 
 @latihan.route('/updatelatihan/<int:id>', methods=["POST"])

@@ -19,7 +19,7 @@
                         <h4 class="card-title">Tambah Latihan</h4>
                         <form class="forms-sample" action="daftarlatihan" method="POST" enctype="multipart/form-data">
                             <div class="form-group">
-                                {{ form.pilihan1.label(class='form-control-label') }}
+                                {{ form.pertanyaan.label(class='form-control-label') }}
                                 {% if form.pertanyaan.errors %}
                                 {{form.pertanyaan(class="form-control")}}
                                 <div class="invalid-feedback">

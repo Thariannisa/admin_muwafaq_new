@@ -12,12 +12,14 @@
 <body>
     {% block content %}
     <div class="content-wrapper">
+
         <div class="row">
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tambah Materi</h4>
-                        <form class="forms-sample" action="daftartulisan" method="POST" enctype="multipart/form-data">
+                        <form class="forms-sample" action="daftartulisan"
+                            method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleInputName1" class="form-label">Tema<span
                                         class="text-danger"></span></label>
@@ -55,6 +57,7 @@
                                     {% endif %}
                                 </div>
                             </div>
+                            
                             <button class="btn btn-utama me-2" type="submit">Submit</button>
                         </form>
                     </div>

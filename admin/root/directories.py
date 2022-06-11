@@ -18,6 +18,8 @@ APP_DIRS = {
     'mawaris': 'mawaris',
     'fiqh': 'fiqh',
     'tajwid': 'tajwid',
+    'fathurahman': 'fathurahman',
+    'umum': 'umum',
     'diskusi': 'diskusi',
     'latihan': 'latihan',
     'api': 'api'

@@ -21,11 +21,12 @@ admin_KIND = "ADMIN"
 
 class Admin:
 
-    def __init__(self, email, password, id=None):
+    def __init__(self, nama, email, password, id=None):
         # Default constructor
         self.id = id
         self.email = email
         self.password = password
+        self.nama = nama
 
     def ke_dictionary(self):
         # Ubah
@@ -35,6 +36,7 @@ class Admin:
         if self.id != None:
             hasil["id"] = self.id
         hasil["email"] = self.email
+        hasil["nama"] = self.nama
         hasil["password"] = self.password
 
         return hasil

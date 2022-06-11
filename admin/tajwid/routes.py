@@ -1,21 +1,23 @@
 import datetime
 import os
+from api import model
+from api.model.tajwid.model import MateriTajwid, materiTajwid_KIND, tajwid_KIND
 from xml.etree.ElementTree import dump
 from flask import flash, jsonify, render_template, request, redirect
+from api.model.admin.check_login import check_login
 from form.forms import (
-    AddTemaForm,
+    EditTulisanForm,
     KontenTulisanForm,
     KontenVideoForm,
 )
 from . import tajwid
 from google.cloud import datastore
 from google.cloud import storage
-tajwid_KIND = "TAJWID"
-materiTajwid_KIND = "MATERI_TAJWID"
 
 
 @tajwid.route('/')
-def maintajwid():
+@check_login
+def maintajwid(datatajwid):
     client = datastore.Client()
     query = client.query(kind=tajwid_KIND)
     hasil = query.fetch()
@@ -26,7 +28,7 @@ def maintajwid():
             "konten": data['konten'],
             "tema": data['tema']
         })
-    return render_template('tajwid/index_tajwid.html', data=hasil_baru)
+    return render_template('materi/tajwid/index_tajwid.html', data=hasil_baru)
 
 
 @tajwid.route('/tambahtema')
@@ -38,12 +40,9 @@ def addTema():
 def daftartema():
     Tema = request.form['tema']
     jenis_konten = request.form['konten']
-
     hasil = {}
-
     hasil["tema"] = Tema
     hasil["konten"] = jenis_konten
-
     client = datastore.Client()
     # Minta dibuatkan Key/Id baru untuk object baru
     key_baru = client.key(tajwid_KIND)
@@ -53,8 +52,6 @@ def daftartema():
     entity_baru.update(hasil)
     # Simpan entity ke datastore
     client.put(entity_baru)
-    # return render_template('modul/index_modul.html')
-    # return hasil
     return redirect('/tajwid')
 
 
@@ -66,9 +63,6 @@ def detailTemaVideo(idTema):
     query.add_filter("idTema", "=", idTema)
     hasil = query.fetch()
     res = client.get(client.key(tajwid_KIND, idTema))
-    # if res == None:
-    #     return "tidak ada"
-
     hasil_baru = []
     for data in hasil:
         hasil_baru.append({
@@ -84,7 +78,6 @@ def detailTemaVideo(idTema):
         "tema": res["tema"],
         "konten": res["konten"]
     }
-    # return context
     return render_template('materi/tajwid/tema/tema_video.html', data=context)
 
 
@@ -106,7 +99,6 @@ def addKontenVideo():
 @tajwid.route('/daftarvideo', methods=['POST'])
 def daftarKontenVideo():
     Tema = request.form['idTema']
-    # return Tema
     client = datastore.Client()
     query = client.query(kind=tajwid_KIND)
     query.add_filter("tema", "=", Tema)
@@ -115,9 +107,6 @@ def daftarKontenVideo():
     author = request.form['author']
     Video = uploadVideo(request)
     idTema = str(data1[0].id)
-    # return idTema
-    if Video == None:
-        return ""
     hasil = {}
     hasil["judul"] = Judul
     hasil["author"] = author
@@ -125,25 +114,17 @@ def daftarKontenVideo():
     hasil["tema"] = Tema
     hasil["idTema"] = int(idTema)
     hasil["video"] = Video
-    if Video == None:
-        return ""
     client = datastore.Client()
     # Minta dibuatkan Key/Id baru untuk object baru
     key_baru = client.key(materiTajwid_KIND)
-
     # Minta dibuatkan entity di datastore memakai key baru
     entity_baru = datastore.Entity(key=key_baru)
     # Simpan object Permintaan ke entity baru
     entity_baru.update(hasil)
     # Simpan entity ke datastore
     client.put(entity_baru)
-    # return render_template('modul/index_modul.html')
-    # return hasil
     return redirect('/tajwid/detail_video/' + idTema)
 
-
-# return render_template('materi/tajwid/tema/detail_tema_video.html', data=entity_baru)
-# return render_template('materi/tajwid/tema/add_konten_video.html')
 
 @tajwid.route('/tambahpembahasan')
 def addKontenTulisan():
@@ -162,7 +143,6 @@ def addKontenTulisan():
 
 @tajwid.route('/daftartulisan', methods=['POST'])
 def daftarKontenTulisan():
-
     Tema = request.form['idTema']
     # return Tema
     client = datastore.Client()
@@ -172,8 +152,6 @@ def daftarKontenTulisan():
     Judul = request.form['judul']
     Tulisan = request.form['tulisan']
     idTema = str(data1[0].id)
-    # return idTema
-
     hasil = {}
     hasil["judul"] = Judul
     hasil["tulisan"] = Tulisan
@@ -181,19 +159,15 @@ def daftarKontenTulisan():
     hasil['video'] = ""
     hasil["tema"] = Tema
     hasil["idTema"] = int(idTema)
-
     client = datastore.Client()
     # Minta dibuatkan Key/Id baru untuk object baru
     key_baru = client.key(materiTajwid_KIND)
-
     # Minta dibuatkan entity di datastore memakai key baru
     entity_baru = datastore.Entity(key=key_baru)
     # Simpan object Permintaan ke entity baru
     entity_baru.update(hasil)
     # Simpan entity ke datastore
     client.put(entity_baru)
-    # return render_template('modul/index_modul.html')
-    # return hasil
     flash("Your materi has been added!", "success")
     return redirect('/tajwid/detail_tulisan/' + idTema)
 
@@ -205,9 +179,7 @@ def detailTemaTulisan(idTema):
     query = client.query(kind=materiTajwid_KIND)
     query.add_filter("idTema", "=", idTema)
     hasil = query.fetch()
-
     res = client.get(client.key(tajwid_KIND, idTema))
-
     hasil_baru = []
     for data in hasil:
         hasil_baru.append({
@@ -218,12 +190,10 @@ def detailTemaTulisan(idTema):
             "tema": data['tema']
         })
     context = {
-
         "data": hasil_baru,
         "tema": res["tema"],
         "konten": res["konten"]
     }
-    # return (context)
     return render_template('materi/tajwid/tema/tema_tulisan.html', data=context)
 
 
@@ -299,3 +269,100 @@ def deleteTema(id):
             return redirect('/tajwid')
     else:
         return "gagal"
+
+
+@tajwid.route('/edit_tulisan/<int:id>/<int:idTema>',  methods=["GET", "POST"])
+def edit_tulisan(id, idTema):
+    form = KontenTulisanForm()
+    # Lakukan pencarian materi berdasar id
+    try:
+        cari_materi = model.tajwid.atur.cari(id)
+    except:
+
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Pastikan berhasil
+    if cari_materi is None:
+        # return render_template('materi/tajwid/tema/edit_Tulisan2.html/', form=form, data=cari_materi)
+        # return cari_materi
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Load template
+    # parameter title dikirim untuk mengisi nilai variabel title di template
+    return render_template('materi/tajwid/tema/edit_Tulisan.html/', form=form, data=cari_materi)
+
+
+@tajwid.route('/updatetulisan/<int:id>/<int:idTema>', methods=["POST"])
+def ubah_tulisan(id, idTema):
+    Tema = request.form['idTema']
+    client = datastore.Client()
+    query = client.query(kind=tajwid_KIND)
+    query.add_filter("tema", "=", Tema)
+    data1 = list(query.fetch())
+    Judul = request.form['judul']
+    Tulisan = request.form['tulisan']
+    idTema = str(data1[0].id)
+    hasil = {}
+    hasil["judul"] = Judul
+    hasil["tulisan"] = Tulisan
+    hasil['author'] = ""
+    hasil['video'] = ""
+    hasil["tema"] = Tema
+    hasil["idTema"] = int(idTema)
+    client = datastore.Client()
+    # Minta dibuatkan Key/Id baru untuk object baru
+    key = client.key(materiTajwid_KIND, id)
+    # Minta dibuatkan entity di datastore memakai key baru
+    entity = datastore.Entity(key=key)
+    # Simpan object Permintaan ke entity baru
+    entity.update(hasil)
+    # Simpan entity ke datastore
+    client.put(entity)
+    return redirect('/tajwid/detail_tulisan/' + str(idTema))
+
+
+@tajwid.route('/edit_video/<int:id>/<int:idTema>',  methods=["GET", "POST"])
+def edit_video(id, idTema):
+    form = KontenVideoForm()
+    # Lakukan pencarian materi berdasar id
+    try:
+        cari_materi = model.tajwid.atur.cari(id)
+    except:
+
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Pastikan berhasil
+    if cari_materi is None:
+        # return render_template('materi/tajwid/tema/edit_Tulisan2.html/', form=form, data=cari_materi)
+        # return cari_materi
+        return f"Gagal mencari materi dengan id: {id}.", 400
+    # Load template
+    # parameter title dikirim untuk mengisi nilai variabel title di template
+    return render_template('materi/tajwid/tema/edit_video.html/', form=form, data=cari_materi)
+
+
+@tajwid.route('/updatevideo/<int:id>/<int:idTema>', methods=["POST"])
+def ubah_video(id, idTema):
+    Tema = request.form['idTema']
+    client = datastore.Client()
+    query = client.query(kind=tajwid_KIND)
+    query.add_filter("tema", "=", Tema)
+    data1 = list(query.fetch())
+    Judul = request.form['judul']
+    author = request.form['author']
+    Video = uploadVideo(request)
+    idTema = str(data1[0].id)
+    hasil = {}
+    hasil["judul"] = Judul
+    hasil["author"] = author
+    hasil['tulisan'] = ""
+    hasil["tema"] = Tema
+    hasil["idTema"] = int(idTema)
+    hasil["video"] = Video
+    client = datastore.Client()
+    # Minta dibuatkan Key/Id baru untuk object baru
+    key = client.key(materiTajwid_KIND, id)
+    # Minta dibuatkan entity di datastore memakai key baru
+    entity = datastore.Entity(key=key)
+    # Simpan object Permintaan ke entity baru
+    entity.update(hasil)
+    # Simpan entity ke datastore
+    client.put(entity)
+    return redirect('/tajwid/detail_video/' + idTema)

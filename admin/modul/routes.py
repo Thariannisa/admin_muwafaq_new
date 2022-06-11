@@ -1,17 +1,24 @@
+# from api import model
+# from api.model.modul import model
+from api import model
 from form.forms import AddModulForm
+from api.model.modul.model import Modul, MODUL_KIND
+from api.model.admin.check_login import check_login
 from flask import flash, jsonify, render_template, request, redirect
 import os
 import datetime
 from . import modul
 from google.cloud import storage
 from google.cloud import datastore
-
-
-MODUL_KIND = "MODUL"
+import datetime
+import os
+from xml.etree.ElementTree import dump
+from api.model.modul.atur import ubah, update
 
 
 @modul.route('/')
-def mainModul():
+@check_login
+def mainModul(datamodul):
     client = datastore.Client()
     query = client.query(kind=MODUL_KIND)
     hasil = query.fetch()
@@ -96,30 +103,6 @@ def uploadPDF(request):
         return ""
 
 
-@modul.route('/edit_modul/<int:id>', methods=['GET'])
-def edit(id):
-    # Buat object hanya jika kedua data ada
-    if id != None:
-        # Sambung ke datastore
-        client = datastore.Client()
-        entity = client.get(client.key(MODUL_KIND, id))
-        if entity is not None:
-            client.put(entity)
-            return render_template('modul/editmodul.html')
-
-
-@modul.route('/update/<int:id>', methods=['PUT'])
-def update(id):
-    # Buat object hanya jika kedua data ada
-    if id != None:
-        # Sambung ke datastore
-        client = datastore.Client()
-        entity = client.get(client.key(MODUL_KIND, id))
-        if entity is not None:
-            client.put(entity)
-            return redirect('/modul')
-
-
 @modul.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
     # Buat object hanya jika kedua data ada
@@ -132,3 +115,44 @@ def delete(id):
             return redirect('/modul')
     else:
         return "gagal"
+
+
+@modul.route('/edit_modul/<int:id>',  methods=["GET", "POST"])
+def edit_modul(id):
+    form = AddModulForm()
+    # Lakukan pencarian berdasar id
+    try:
+        cari_modul = model.modul.atur.cari(id)
+    except:
+
+        return f"Gagal mencari modul dengan id: {id}.", 400
+    # Pastikan berhasil
+    if cari_modul is None:
+        # return render_template('materi/tilawah/tema/edit_Tulisan2.html/', form=form, data=cari_materi)
+        # return cari_materi
+        return f"Gagal mencari modul dengan id: {id}.", 400
+    # Load template
+    # parameter title dikirim untuk mengisi nilai variabel title di template
+    return render_template('modul/edit_modul.html/', form=form, data=cari_modul)
+
+
+@modul.route('/updatemodul/<int:id>', methods=["POST"])
+def ubah_modul(id):
+
+    Judul = request.form['judul']
+    PDF = uploadPDF(request)
+    hasil = {}
+# hasil["tema"] = Tema
+    hasil["judul"] = Judul
+    hasil["PDF"] = PDF
+
+    client = datastore.Client()
+    key = client.key(MODUL_KIND, id)
+# Minta dibuatkan entity di datastore memakai key baru
+    entity = datastore.Entity(key=key)
+# Simpan object Permintaan ke entity baru
+    entity.update(hasil)
+# Simpan entity ke datastore
+    client.put(entity)
+
+    return redirect('/modul')

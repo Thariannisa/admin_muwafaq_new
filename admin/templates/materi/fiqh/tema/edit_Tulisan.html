@@ -1,0 +1,61 @@
+{% extends 'layout.html'%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Edit Fiqh </title>
+</head>
+
+<body>
+    {% block content %}
+    <div class="content-wrapper">
+        {% for hasil in data %}
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">edit tulisan</h4>
+                        <form class="forms-sample" action="/fiqh/updatetulisan/{{hasil['id']}}/{{hasil['idTema']}}"
+                            method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleInputName1" class="form-label">Tema<span
+                                        class="text-danger"></span></label>
+                                <select class="form-control" name="idTema">
+                                    {% for x in data %}
+                                    <option value="{{x['tema']}}">{{x['tema']}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                {{ form.judul.label(class='form-control-label') }}
+                                {% if form.judul.errors %}
+                                {{form.judul(class="form-control")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.judul.errors %}
+                                    <span> {{ error }} </span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.judul(class="form-control", value=hasil.judul) }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName1">Tulisan</label>
+                                <textarea type="text" id="tulisan" name="tulisan" class="form-control" rows="8" cols="100">{{hasil['tulisan']}}
+                                </textarea>
+                            </div>
+                            <button class="btn btn-utama me-2" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock content %}
+</body>
+
+</html>

@@ -1,19 +1,18 @@
 from flask import redirect, render_template, request
-
 from api.model.admin import model
 from api import model
+from api.model.admin.check_login import check_login
 from api.model.diskusi.model import Diskusi, diskusi_KIND
 from . import diskusi
 from google.cloud import datastore
 from form.forms import (
     AddDiskusiForm
 )
-diskusi_KIND = "DISKUSI"
 
 
-@diskusi.route('/')
-def maindiskusi():
-
+@diskusi.route('/', methods=['GET'])
+@check_login
+def maindiskusi(datadiskusi):
     client = datastore.Client()
     query = client.query(kind=diskusi_KIND)
     hasil = query.fetch()
@@ -77,7 +76,7 @@ def delete(id):
 
 @diskusi.route('/edit_diskusi/<int:id>',  methods=["GET", "POST"])
 def edit_diskusi(id):
-
+    form = AddDiskusiForm()
     # Lakukan pencarian berdasar id
     try:
         cari_diskusi = model.diskusi.atur.cari(id)
@@ -91,7 +90,7 @@ def edit_diskusi(id):
         return f"Gagal mencari diskusi dengan id: {id}.", 400
     # Load template
     # parameter title dikirim untuk mengisi nilai variabel title di template
-    return render_template('diskusi/edit_diskusi.html/', data=cari_diskusi)
+    return render_template('diskusi/edit_diskusi.html/', form=form, data=cari_diskusi)
 
 
 @diskusi.route('/updatediskusi/<int:id>', methods=["POST"])
@@ -105,15 +104,5 @@ def ubah_diskusi(id):
         'keterangan': request.form['keterangan'],
     })
     client.put(entity)
-
-    # data = MateriMawaris.update(id,
-    #                             # request.form['idTema'],
-    #                             request.form['judul_tulisan'],
-    #                             # request.form['author'],
-    #                             # request.form['judul_video'],
-    #                             request.form['tema'],
-    #                             request.form['tulisan'],
-    #                             # request.form['video']
-    #                             )
 
     return redirect('/diskusi')
