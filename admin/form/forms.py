@@ -39,6 +39,19 @@ class KontenVideoForm(FlaskForm):
     judul = StringField(
         label="Judul", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan judul video"}
     )
+    author = StringField(
+        label="Author", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan nama author"}
+    )
+
+    video = FileField('Upload Video', validators=[
+        FileRequired(),
+        FileAllowed(['mp4'], 'Images only!')
+    ])
+
+    class KontenVideosementaraForm(FlaskForm):
+        judul = StringField(
+            label="Judul", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan judul video"}
+        )
     # author = StringField(
     #     label="Author", validators=[DataRequired(), Length(min=3, max=25)], render_kw={"placeholder": "masukkan nama author"}
     # )
@@ -47,10 +60,10 @@ class KontenVideoForm(FlaskForm):
     )
     tulisan = TextAreaField('tulisan', widget=TextArea(), validators=[Length(
         min=3, max=1300)],  render_kw={"placeholder": "masukkan pembahasan"})
-    video = FileField('Upload Video', validators=[
-        FileRequired(),
-        FileAllowed(['mp4'], 'Images only!')
-    ])
+    # video = FileField('Upload Video', validators=[
+    #     FileRequired(),
+    #     FileAllowed(['mp4'], 'Images only!')
+    # ])
     video = FileField('Upload Video', validators=[
         FileAllowed(['mp4'], 'Images only!')
     ])
