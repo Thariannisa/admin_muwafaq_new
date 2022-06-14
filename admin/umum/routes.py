@@ -13,7 +13,9 @@ from form.forms import (
     EditTulisanForm,
     KontenTulisanForm,
     KontenVideoForm,
-    KontenVideosementaraForm,
+    KontenVideo2Form,
+
+
 )
 from . import umum
 from google.cloud import datastore
@@ -90,7 +92,7 @@ def detailTemaVideo(idTema):
 
 @umum.route('/tambahvideo')
 def addKontenVideo():
-    form = KontenVideosementaraForm()
+    form = KontenVideo2Form()
     client = datastore.Client()
     query = client.query(kind=umum_KIND)
     hasil = query.fetch()
