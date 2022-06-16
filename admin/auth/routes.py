@@ -80,9 +80,17 @@ def callback():
         audience=GOOGLE_CLIENT_ID
     )
 
-    session["google_id"] = id_info.get("sub")
-    session["name"] = id_info.get("name")
-    return redirect("/")
+    email = id_info.get("email")
+
+    if LoginGoogleAdmin(email):
+        session["google_id"] = id_info.get("sub")
+        session["name"] = id_info.get("name")
+        session["email"] = id_info.get("email")
+        return redirect("/")
+    else:
+        session.clear()
+        return redirect("/")
+    
 
 
 @auth.route('/login', methods=["GET", "POST"])
@@ -130,6 +138,23 @@ def LoginAdmin(
         if satuHasil:
             data = satuHasil[0]
             return data
+        return None
+
+def LoginGoogleAdmin(
+    email
+):
+    if email != None:
+
+        client = datastore.Client()
+        query = client.query(kind=admin_KIND)
+        hasil = query.fetch()
+        hasil_baru = []
+
+        for data in hasil:
+            if email == data['email']:
+                return True
+            else:
+                return False
         return None
 
 
