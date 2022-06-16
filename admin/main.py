@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 from root.directories import BASE_DIR
 import os
 
-# credential_path = "C:\gcloud_key\TA\key.json"
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
+credential_path = "C:\gcloud_key\key_rio\key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 
 load_dotenv(BASE_DIR / '.env')
 

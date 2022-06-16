@@ -23,17 +23,18 @@ from google.cloud import datastore
 from auth.forms import LoginForm
 # GOOGLE_CLIENT_ID = "908376936693-j3g8s0pgq0ihtid7b8806ksmlt6ac95h.apps.googleusercontent.com"
 # flow = Flow.from_client_secret_file
+admin2_KIND = "ADMIN3"
 
 app = Flask("Google Login App")
-app.secret_key = "CodeSpecialist.com"
+app.secret_key = "5791628bb0b13ce0c676dfde280ba288"
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\gcloud_key\key_rio\key.json"
 
 
-GOOGLE_CLIENT_ID = "908376936693-j3g8s0pgq0ihtid7b8806ksmlt6ac95h.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = "417093792904-uf0v2s77ikv9m8fr0ak447avhotesdka.apps.googleusercontent.com"
 client_secrets_file = os.path.join(
-    pathlib.Path(__file__).parent, "client_secret.json")
+    pathlib.Path(__file__).parent, "C:\gcloud_key\key_rio\client_secret_key_login.json")
 
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
@@ -100,12 +101,12 @@ def login():
                     session["user"] = request.form['email']
                     return redirect(url_for('index'))
                     # return "berhasil"
-
         # return "gagal"
         # return redirect(url_for('index'))
-        # return "gagal"
+        # return "tes"
         # return suksesLogin
         return render_template('auth/login.html', form=form, error="email atau password salah")
+
     return render_template('auth/login.html', form=form)
 
 
@@ -122,7 +123,7 @@ def LoginAdmin(
     if email != None and password != None:
 
         client = datastore.Client()
-        queri = client.query(kind=admin_KIND)
+        queri = client.query(kind=admin2_KIND)
         queri.add_filter("email", "=", email)
 
         satuHasil = list(queri.fetch(limit=1))
@@ -134,7 +135,7 @@ def LoginAdmin(
 
 @auth.route('/generate_pass')
 def create_user():
-    create_pass = generate_password_hash('BismillahMuwafaqAceh',
+    create_pass = generate_password_hash('BismillahMuwafaqAceh10',
                                          method='pbkdf2:sha256', salt_length=26)
     return create_pass
 
